@@ -60,39 +60,27 @@ def get_average(name:str)->any:
 # # 3. Restaurant Menu Editor
 # def change_availability(): pass
 # def total_available_price(): pass
-dish_list:dict = {}
-def add_dish(dish:str,price:float,availability:bool)->None:
-    if dish in dish_list:
+menu:dict = {}
+def add_dish(dish:str,price:float,availability:int)->None:
+    if dish in menu:
         print("The dish already exists.")
         return
-    dish_list[dish] = {"price":price,"availability":availability}
-def change_availability(dish:str)->None:
-    if dish in dish_list:
-        dish_list[dish]["availability"] = not dish_list[dish]["availability"]
-    else: print("Dish not found.")
+    menu[validation(dish, lambda x: re.search(r'^[a-z\d\s]+$', x, re.IGNORECASE),' Only letters, numbers and spaces between words are allowed')] = \
+        {
+        "price":validation(price, lambda x: x >= 1,' The price must be greater than 0'),
+        "availability":validation(availability, True,' The availability must be a boolean')
+        }
+def change_availability(title:str)->str:
+    if title in library:
+        return f"{title.title()} by {library[title]['author'].title()} has {library[title]['pages']} pages."
+    else:
+        return 'Book not found.'
 def show_books()->None:
     if library:
         print(f"{'Title':<20}{'Author':^20}{'Pages':>10}")
         for title,book in library.items():
             print(f"{title.title():<20}{book['author'].title():^20}{book['pages']:>10}")
     else: print("No books found.")
-def book_menu()->None:
-    flag:bool = True
-    while flag:
-        try:
-            option:int = int(input(f'\n1. Add book\n2. Find book\n3. Show books\n4. Exit\nEnter an option: '))
-            match option:
-                case 1:
-                    add_book(validation('\nEnter the name of the book: ', lambda x: re.search(r'^[a-z\d\s]+$', x, re.IGNORECASE) ,str, ' Only letters, numbers and spaces between words are allowed'),
-                              validation('\nEnter the author of the book: ', lambda x: re.search(r'^[a-z\d\s]+$', x, re.IGNORECASE) ,str, ' Only letters, numbers and spaces between words are allowed'),
-                              validation('\nEnter the number of pages the book has: ', lambda x: x >= 1,int, ' The number of pages must be greater than 0'))
-                case 2:
-                    find_book(str(input('\nEnter the name of the book you want to search for: ')))
-                case 3: show_books()
-                case 4: flag = False
-                case _: print('\nInvalid option.')
-        except ValueError: print('\nInvalid option.')
-#book_menu()
 
 # # 4. Warehouse Box Counter
 # def add_box(): pass
