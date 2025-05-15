@@ -17,7 +17,7 @@ def show_books()->None:
             print(f'{title.title():<20}{book['author'].title():^20}{book['pages']:>10}')
     else: print('No books found.')
 
-#  2. Student Grade Manager
+# 2. Student Grade Manager
 grades:dict = {}
 def add_student(name:str)->None:
     if name in grades:
@@ -35,7 +35,7 @@ def get_average(name:str)->any:
     else:
         return'Student not found.'
 
-# # 3. Restaurant Menu Editor
+# 3. Restaurant Menu Editor
 menu:dict = {}
 def add_dish(dish:str,price:float,availability:int)->None:
     if dish in menu:
@@ -51,7 +51,7 @@ def total_available_price()->float:
         return sum(dish['price'] for dish in menu.values() if dish['availability'])
     return 0
 
-# # 4. Warehouse Box Counter
+# 4. Warehouse Box Counter
 warehouse:dict = {}
 def add_box(box:str,quantity:int)->None:
     if box in warehouse:
@@ -67,10 +67,7 @@ def has_enough(box:str,quantity:int)->bool:
         return warehouse[box]['quantity'] >= quantity
     else: return False
 
-# # 5. Movie Rating System
-# def add_movie(): pass
-# def rate_movie(): pass
-# def average_rating(): pass
+# 5. Movie Rating System
 movies:dict = {}
 def add_movie(movie:str)->None:
     if movie in movies:
@@ -88,27 +85,69 @@ def average_rating(movie:str)->float or str:
     else:
         return'Movie not found.'
 
-# # 6. Online Course Tracker
-# def add_course(): pass
-# def update_enrollment(): pass
-# def filter_by_hours(): pass
-#
-# # 7. To-Do List Organizer
-# def add_task(): pass
-# def complete_task(): pass
-# def filter_tasks(): pass
-#
-# # 8. Digital Wallet
-# def add_expense(): pass
-# def total_spent(): pass
-# def expense_percentages(): pass
-#
-# # 9. Pet Adoption Center
-# def add_pet(): pass
-# def find_by_species(): pass
-# def older_than(): pass
-#
-# # 10. Gym Membership System
-# def register_member(): pass
-# def change_plan(): pass
-# def unpaid_members(): pass
+# 6. Online Course Tracker
+courses:dict = {}
+def add_course(course:str,hours:int,enrolled:int)->None:
+    if course in courses:
+        print('The course already exists.')
+        return
+    courses[course] = {'hours':hours, 'enrolled':enrolled}
+def update_enrollment(course:str,enrolled:int)->None:
+    if course in courses:
+        courses[course]['enrolled'] = enrolled
+    else: print('The course doesnt exist.')
+def filter_by_hours(hours:int):
+    return {key: value for key, value in courses.items() if value['hours'] >= hours}
+
+# 7. To-Do List Organizer
+todos:dict = {}
+def add_task(task:str,priority:str)->None:
+    if task in todos:
+        print('The task already exists.')
+        return
+    todos[task] = {'priority':priority, 'status':'uncompleted'}
+def complete_task(task:str)->None:
+    if task in todos:
+        todos[task]['status'] = 'completed'
+def filter_tasks(priority:str, status:str):
+    return [key for key, value in todos.items() if value['priority'] == priority and value['status'] == status]
+
+# 8. Digital Wallet
+wallet:dict = {}
+def add_expense(category:str,expense:float)->None:
+    if category in wallet:
+        wallet[category] += expense
+    else: wallet[category] = expense
+def total_spent()->float:
+    return sum(wallet.values())
+def expense_percentages()->dict:
+    for category,expense in wallet.items():
+        wallet[category] = expense/total_spent()*100
+    return wallet
+
+# 9. Pet Adoption Center
+pets:list = []
+def add_pet(name:str,species:str,age:int)->None:
+    if name in pets:
+        print('The pet already exists.')
+        return
+    pet = {'name':name, 'species':species, 'age':age}
+    pets.append(pet)
+def find_by_species(species:str)->list:
+    return [i for i in pets if i['species'] == species]
+def older_than(age:int)->list:
+    return [i for i in pets if i['age'] > age]
+
+# 10. Gym Membership System
+members:dict = {}
+def register_member(name:str,plan:str,payment:str)->None:
+    if name in members:
+        print('The member already exists.')
+        return
+    members[name] = {'plan':plan, 'payment':payment}
+def change_plan(name:str,plan:str)->None:
+    if name in members:
+        members[name]['plan'] = plan
+    else: print('The member doesnt exist.')
+def unpaid_members()->dict:
+    return {key: value for key, value in members.items() if value['payment'] == 'late'}
